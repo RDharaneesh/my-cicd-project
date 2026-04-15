@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Coding Conf Ticket</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Inter',sans-serif;
+}
+
+body{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background: radial-gradient(circle at top left,#1a0b2e,#090b2a);
+  color:white;
+}
+
+.container{
+  width:380px;
+  text-align:center;
+}
+
+h1{
+  font-size:26px;
+  font-weight:700;
+}
+
+.sub{
+  color:#aaa;
+  margin:10px 0 20px;
+}
+
+/* UPLOAD BOX */
+.upload{
+  border:2px dashed #555;
+  border-radius:12px;
+  padding:25px;
+  cursor:pointer;
+  margin-bottom:10px;
+}
+
+.upload img{
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  object-fit:cover;
+  display:none;
+  margin:auto;
+}
+
+/* INPUTS */
+input{
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+  border-radius:10px;
+  border:1px solid #444;
+  background:transparent;
+  color:white;
+}
+
+/* BUTTON */
+button{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:12px;
+  background:#ff6a5c;
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+}
+
+/* RESULT */
+#result{
+  display:none;
+}
+
+/* TICKET */
+.ticket{
+  margin-top:20px;
+  background:linear-gradient(135deg,#2c2d5b,#6b4bb8);
+  border-radius:15px;
+  padding:20px;
+  position:relative;
+}
+
+/* CUT EFFECT */
+.ticket:before,
+.ticket:after{
+  content:"";
+  position:absolute;
+  top:50%;
+  width:20px;
+  height:20px;
+  background:#090b2a;
+  border-radius:50%;
+  transform:translateY(-50%);
+}
+
+.ticket:before{ left:-10px; }
+.ticket:after{ right:-10px; }
+
+.ticket-user{
+  display:flex;
+  align-items:center;
+  margin-top:15px;
+}
+
+.ticket-user img{
+  width:50px;
+  height:50px;
+  border-radius:50%;
+  object-fit:cover;
+}
+
+.ticket-user div{
+  margin-left:10px;
+}
+
+.highlight{
+  color:#ff6a5c;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- FORM -->
+  <div id="form">
+
+    <h1>Your Journey to Coding Conf 2025 Starts Here!</h1>
+    <p class="sub">Secure your spot at next year’s biggest coding conference.</p>
+
+    <div class="upload" onclick="document.getElementById('file').click()">
+      <img id="preview">
+      <p id="uploadText">Drag and drop or click to upload</p>
+      <input type="file" id="file" hidden accept="image/*">
+    </div>
+
+    <input id="name" placeholder="Full Name">
+    <input id="email" placeholder="Email Address">
+    <input id="github" placeholder="GitHub Username">
+
+    <button onclick="generate()">Generate My Ticket</button>
+
+  </div>
+
+  <!-- RESULT -->
+  <div id="result">
+
+    <h1>Congrats, <span class="highlight" id="rName"></span>!</h1>
+    <p class="sub">Your ticket is ready.</p>
+
+    <div class="ticket">
+
+      <div><b>Coding Conf</b></div>
+      <div id="date" style="font-size:12px;color:#ccc;"></div>
+
+      <div class="ticket-user">
+        <img id="avatar" src="">
+        <div>
+          <div id="tName"></div>
+          <div id="tGit" style="font-size:12px;color:#ccc;"></div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+
+let imgData = "";
+
+/* IMAGE UPLOAD + PREVIEW */
+document.getElementById("file").addEventListener("change", function(e){
+
+  const file = e.target.files[0];
+
+  if(file){
+    const reader = new FileReader();
+
+    reader.onload = function(event){
+      imgData = event.target.result;
+
+      const preview = document.getElementById("preview");
+      preview.src = imgData;
+      preview.style.display = "block";
+
+      document.getElementById("uploadText").style.display = "none";
+    };
+
+    reader.readAsDataURL(file);
+  }
+});
+
+/* GENERATE TICKET */
+function generate(){
+
+  let name = document.getElementById("name").value;
+  let email = document.getElementById("email").value;
+  let git = document.getElementById("github").value;
+
+  if(!name || !email || !git){
+    alert("Please fill all fields");
+    return;
+  }
+
+  if(!imgData){
+    alert("Please upload an image");
+    return;
+  }
+
+  document.getElementById("form").style.display = "none";
+  document.getElementById("result").style.display = "block";
+
+  document.getElementById("rName").innerText = name;
+  document.getElementById("tName").innerText = name;
+  document.getElementById("tGit").innerText = "@" + git;
+
+  /* SET AVATAR */
+  document.getElementById("avatar").src = imgData;
+
+  /* CURRENT DATE */
+  let d = new Date();
+  let dateStr = d.toDateString() + " / " + d.toLocaleTimeString();
+  document.getElementById("date").innerText = dateStr;
+}
+
+</script>
+
+</body>
+</html>
