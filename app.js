@@ -1,13 +1,16 @@
 const express = require('express');
-const path = require('path');
-
 const app = express();
 
-// Serve HTML file
+const PORT = 3000;
+
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+    res.send('🚀 Microservice App is Running!');
 });
 
-app.listen(3000, () => {
-  console.log('Server running on port 3000');
+app.get('/health', (req, res) => {
+    res.json({ status: 'UP' });
+});
+
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
 });
