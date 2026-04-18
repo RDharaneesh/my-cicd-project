@@ -1,126 +1,84 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>Microservice Auto Analysis</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Microservice Monitor</title>
 
 <style>
 body {
   font-family: Arial;
-  margin: 0;
-  background: #0f172a;
+  background: #111;
   color: white;
-}
-
-header {
-  background: #1e293b;
-  padding: 15px;
   text-align: center;
-  font-size: 22px;
-  font-weight: bold;
 }
 
-.container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
-  padding: 20px;
+h1 {
+  margin-top: 20px;
 }
 
-.card {
-  background: #1e293b;
-  padding: 15px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.3);
-}
-
-.status {
-  padding: 5px 10px;
-  border-radius: 5px;
+.box {
   display: inline-block;
-  font-size: 12px;
+  width: 200px;
+  padding: 15px;
+  margin: 15px;
+  border-radius: 10px;
 }
 
 .up { background: green; }
 .down { background: red; }
-.warning { background: orange; }
 
-.logs {
-  grid-column: span 3;
-  background: #111827;
-  padding: 15px;
-  border-radius: 10px;
-  height: 200px;
-  overflow-y: auto;
-  font-family: monospace;
+button {
+  padding: 10px;
+  margin-top: 10px;
+  cursor: pointer;
 }
-
 </style>
 </head>
 
 <body>
 
-<header>
-<<<<<<< HEAD
-Microservice Auto Analysis Dashboard 🚀
-=======
-Microservice Auto Analysis Dashboard 
->>>>>>> 5dfb7c1 (done)
-</header>
+<h1>Microservice Status</h1>
 
-<div class="container">
-
-  <div class="card">
-    <h3>User Service</h3>
-    <span class="status up">UP</span>
-    <p>CPU: 45%</p>
-    <p>Requests: 1200/min</p>
-  </div>
-
-  <div class="card">
-    <h3>Order Services</h3>
-    <span class="status warning">HIGH LOAD</span>
-    <p>CPU: 78%</p>
-    <p>Requests: 2400/min</p>
-  </div>
-
-  <div class="card">
-    <h3>Payment Services</h3>
-    <span class="status down">DOWN</span>
-    <p>Error Rate: 90%</p>
-    <p>Last Check: Failed</p>
-  </div>
-
-  <div class="logs" id="logs">
-    <b>System Logs:</b><br>
-  </div>
-
+<div class="box" id="service1">
+  <h3>User Service</h3>
+  <p>Status: <span>Loading...</span></p>
 </div>
 
+<div class="box" id="service2">
+  <h3>Order Service</h3>
+  <p>Status: <span>Loading...</span></p>
+</div>
+
+<div class="box" id="service3">
+  <h3>Payment Service</h3>
+  <p>Status: <span>Loading...</span></p>
+</div>
+
+<br>
+<button onclick="checkServices()">Check Status</button>
+
 <script>
-const logs = document.getElementById("logs");
+function checkServices() {
+  fetch('/status')
+    .then(res => res.json())
+    .then(data => {
+      update('service1', data.user);
+      update('service2', data.order);
+      update('service3', data.payment);
+    });
+}
 
-const messages = [
-  "Checking User Service...",
-  "User Service OK ✔",
-  "Checking Order Service...",
-  "Order Service HIGH LOAD ⚠",
-  "Checking Payment Service...",
-  "Payment Service DOWN ❌",
-  "Auto healing triggered...",
-  "Restarting Payment Service..."
-];
+function update(id, status) {
+  const box = document.getElementById(id);
+  const span = box.querySelector("span");
 
-let i = 0;
+  span.innerText = status;
 
-setInterval(() => {
-  if(i < messages.length){
-    logs.innerHTML += messages[i] + "<br>";
-    logs.scrollTop = logs.scrollHeight;
-    i++;
+  if(status === "UP"){
+    box.className = "box up";
+  } else {
+    box.className = "box down";
   }
-}, 1500);
+}
 </script>
 
 </body>
