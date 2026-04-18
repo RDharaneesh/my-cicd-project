@@ -75,4 +75,8 @@ pipeline {
             echo "❌ Pipeline failed!"
         }
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> dd42308 (update)

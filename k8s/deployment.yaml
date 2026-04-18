@@ -16,4 +16,8 @@ spec:
       - name: my-app
         image: my-dockerhub/my-microservice:latest
         ports:
+<<<<<<< HEAD
         - containerPort: 3000
+=======
+        - containerPort: 3000
+>>>>>>> dd42308 (update)

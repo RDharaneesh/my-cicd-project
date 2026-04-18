@@ -9,4 +9,8 @@ spec:
   ports:
     - port: 3000
       targetPort: 3000
+<<<<<<< HEAD
       nodePort: 30007
+=======
+      nodePort: 30007
+>>>>>>> dd42308 (update)
