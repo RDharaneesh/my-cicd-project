@@ -1,23 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-app
+  name: myapp-deployment
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: my-app
+      app: myapp
   template:
     metadata:
       labels:
-        app: my-app
+        app: myapp
     spec:
       containers:
-      - name: my-app
-        image: my-dockerhub/my-microservice:latest
-        ports:
-<<<<<<< HEAD
-        - containerPort: 3000
-=======
-        - containerPort: 3000
->>>>>>> dd42308 (update)
+        - name: myapp
+          image: dharaneeshadmin/myapp:v1   # 👈 your docker image
+          ports:
+            - containerPort: 3000
