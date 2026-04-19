@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Advanced Microservices Dashboard</title>
+<title>Microservices Dashboard</title>
 
 <style>
 body {
@@ -18,7 +18,6 @@ body {
   font-size: 20px;
   font-weight: bold;
   text-align: center;
-  border-bottom: 2px solid #1e293b;
 }
 
 /* Stats */
@@ -49,19 +48,18 @@ body {
   border-radius: 15px;
   background: #1e293b;
   transition: 0.3s;
-  box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 
 .card:hover {
   transform: translateY(-5px);
 }
 
+/* Status */
 .status {
   font-size: 18px;
   margin-top: 10px;
 }
 
-/* Status styles */
 .up {
   border-left: 5px solid #22c55e;
 }
@@ -70,7 +68,7 @@ body {
   border-left: 5px solid #ef4444;
 }
 
-/* Pulse dot */
+/* Dot animation */
 .dot {
   height: 10px;
   width: 10px;
@@ -114,7 +112,6 @@ button:hover {
 /* Footer */
 .footer {
   text-align: center;
-  font-size: 14px;
   margin: 20px;
   color: #94a3b8;
 }
@@ -126,7 +123,7 @@ button:hover {
 <div class="navbar">🚀 Microservices Monitoring Dashboard</div>
 
 <div class="stats">
-  <div class="stat-box">Total: <span id="total">3</span></div>
+  <div class="stat-box">Total: 3</div>
   <div class="stat-box">UP: <span id="upCount">0</span></div>
   <div class="stat-box">DOWN: <span id="downCount">0</span></div>
 </div>
@@ -157,28 +154,37 @@ button:hover {
 </div>
 
 <script>
-function checkServices() {
-  fetch('/status')
-    .then(res => res.json())
-    .then(data => {
-      let up = 0, down = 0;
-
-      update('service1', data.user);
-      update('service2', data.order);
-      update('service3', data.payment);
-
-      [data.user, data.order, data.payment].forEach(s => {
-        if(s === "UP") up++;
-        else down++;
-      });
-
-      document.getElementById("upCount").innerText = up;
-      document.getElementById("downCount").innerText = down;
-      document.getElementById("time").innerText = new Date().toLocaleTimeString();
-    })
-    .catch(() => alert("Backend not reachable"));
+// Random status generator
+function randomStatus() {
+  return Math.random() > 0.5 ? "UP" : "DOWN";
 }
 
+// Main function
+function checkServices() {
+
+  const data = {
+    user: randomStatus(),
+    order: randomStatus(),
+    payment: randomStatus()
+  };
+
+  let up = 0, down = 0;
+
+  update('service1', data.user);
+  update('service2', data.order);
+  update('service3', data.payment);
+
+  Object.values(data).forEach(s => {
+    if(s === "UP") up++;
+    else down++;
+  });
+
+  document.getElementById("upCount").innerText = up;
+  document.getElementById("downCount").innerText = down;
+  document.getElementById("time").innerText = new Date().toLocaleTimeString();
+}
+
+// Update UI
 function update(id, status) {
   const card = document.getElementById(id);
   const text = card.querySelector(".status");
@@ -192,7 +198,11 @@ function update(id, status) {
   }
 }
 
+// Auto refresh every 5 seconds
 setInterval(checkServices, 5000);
+
+// Initial load
+checkServices();
 </script>
 
 </body>
